@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Webcam management by JPHellemons</title>
+		<!--<meta http-equiv="refresh" content="5">-->
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	</head>
+	<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="#">Webcams</a>
+			</div>
+		</div>
+	</div>
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span10">
+					<div class="container">
+						<div class="row">
+							<div class="span6">
+								<img id="1" src="http://192.168.1.91:99/snapshot.cgi?user=admin&pwd=&13651552389760.8355656671180365" />
+							</div>
+							<div class="span6">
+								<img id="2" src="http://192.168.1.92:99/snapshot.cgi?user=admin&pwd=&13651552389760.8355656671180365" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="span6">
+								<img id="3" src="http://192.168.1.93:99/snapshot.cgi?user=admin&pwd=&13651552389760.8355656671180365" />
+							</div>
+							<div class="span6">
+								<img id="4" src="http://192.168.1.94:99/snapshot.cgi?user=admin&pwd=&13651552389760.8355656671180365" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="span2 text-center">
+					<div class="btn-toolbar">
+						<div class="btn-group view-opt-btn-group" data-toggle="buttons-radio" >
+							<button class="btn active">1</button>
+							<button class="btn">2</button>
+							<button class="btn">3</button>
+							<button class="btn">4</button>
+						</div>
+					</div>
+					<div style="background-color: pink; padding: 5px;" id="controls" class="img-circle">
+						<table>
+							<tr>
+								<td>&nbsp;</td>
+								<td><a id="up" href="#" class="btn btn-mini"><i class=" icon-chevron-up"></i></a></td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td><a id="left" href="#" class="btn btn-mini"><i class=" icon-chevron-left"></i></a></td>
+								<td>&nbsp;</td>
+								<td><a id="right" href="#" class="btn btn-mini"><i class=" icon-chevron-right"></i></a></td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+								<td><a id="down" href="#" class="btn btn-mini"><i class=" icon-chevron-down"></i></a></td>
+								<td>&nbsp;</td>
+							</tr>
+						</table>
+					</div>
+					<a href="http://nl.linkedin.com/in/hellemons">
+						<img style="margin-top: 2em;" src="http://www.linkedin.com/img/webpromo/btn_myprofile_160x33.png" width="160" height="33" border="0" alt="View Jean-Pierre Hellemons's profile on LinkedIn">
+					</a>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var PTZ_UP=0;
+			var PTZ_UP_STOP=1;
+			var PTZ_DOWN=2;
+			var PTZ_DOWN_STOP=3;
+			var PTZ_LEFT=4;
+			var PTZ_LEFT_STOP=5;
+			var PTZ_RIGHT=6;
+			var PTZ_RIGHT_STOP=7;
+			var PTZ_LEFT_UP=90;
+			var PTZ_RIGHT_UP=91;
+			var PTZ_LEFT_DOWN=92;
+			var PTZ_RIGHT_DOWN=93;
+			var PTZ_STOP=1;
+
+			$(document).ready(function(){
+				$("div#controls a").click(function(){
+					var loc = $(this).attr("id");
+					var camnr = $("div.btn-group button.active").text();
+					var cam = $("div.row img#" + camnr);
+					$(cam).attr('src');
+					
+					var command;
+					switch(loc)
+					{
+						case 'left' : command = PTZ_LEFT; break;
+						case 'right' : command = PTZ_RIGHT; break;
+						case 'up' : command = PTZ_UP; break;
+						case 'down' : command = PTZ_DOWN; break;
+					}
+					var url = $(cam).attr('src').substring(0,22) +'/decoder_control.cgi?loginuse=admin&loginpas=&' + new Date().getTime() + Math.random();
+					url += '&command=' + command + '&onestep=1';
+					$.getScript(url);
+					$(cam).attr('src', $(cam).attr('src') + '&' + new Date().getTime() + Math.random());
+				});
+			});
+		</script>
+	</body>
+</html>
